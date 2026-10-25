@@ -1,0 +1,66 @@
+--- Original PDF page 76 ---
+"No Motion"
+)
+frame1 = frame2_gray
+time.sleep(1)
+7. Result:
+
+  PRACTICAL-17
+1. Aim
+push-button and an LED with a web dashboard. The flow must allow users to toggle the LED
+from the dashboard and via the physical button. A button press should force the LED ON
+Design and implement a Node-RED flow on Raspberry Pi that integrates a physic for 5 seconds
+and then automatically restore the LED to the dashboard's last state.
+2. Prior Concepts
+i) Concept of Python Programming
+ii) LED interfacing with Raspberry Pi
+iii) Push button switch operation
+iv) Web browser operation
+v) Event-driven programming basics
+3. New Concepts
+i) Node-RED visual programming.
+ii) Flow-based loT application development.
+
+--- Original PDF page 77 ---
+iii) Web-based device control.
+iv) Dashboard and hardware synchronization.
+v) Timer and delay node implementation.
+4. Hardware Required
+i) Push Button Switch
+ii) LED
+iii) Jumper Wires
+5. Procedure
+Pin Connection
+Camera Module: Connect the Raspberry Pi Camera Module to the CSI Camera Port of
+Raspberry Pi 4
+LED Connections to Raspi:
+Component Raspberry Pi 4
+LED Anode (+) GPIO18 (Pin 12) through 220 resistor
+LED Cathode (-) GND (Pin 6)
+
+Input IMAGE
+
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+
+--- Original PDF page 78 ---
+sudo apt install idle3
+Install Node-RED Dashboard:
+cd ~/.node-red
+npm install node-red-dashboard
+Restart Node-RED:
+node-red-stop
+node-red-start
+6. Execution
+Now open Node Red in browser:
+http://<RaspberryPi-IP>:1880
+
+                                           PRACTICAL-18
+1.Aim
+Write a program to read the CPU%, Memory% and CPU temperature of Raspberry Pi,
+2. Prior Concepts
+i) Linux operating system fundamentals
+ii) Processor and memory concepts.
+3. New Concepts
+i)  System performance monitoring.
+ii) CPU utilization measurement.

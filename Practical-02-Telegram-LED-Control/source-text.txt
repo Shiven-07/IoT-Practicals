@@ -1,0 +1,144 @@
+--- Original PDF page 4 ---
+4 | P a g e
+
+PRACTICAL -2
+
+1.Aim:
+Use Telegram to control Raspberry Pi GPIO.
+
+2. Prior Concepts:
+i) Python Programming
+ii) MQTT Protocol
+
+3. New Concepts:
+Controlling LED through telegram bot and Raspi
+
+4. Hardware Required:
+i)LED
+ii) Breadboard
+iii) Resistor
+iv) Jumper wires
+
+5. Software Required:
+On Mobile Phone: Telegram:
+Steps:
+Download Telegram from playstore on your android phone.
+i) Install Telegram.
+ii) Open Telegram app in your system or mobile
+iii) Click On Start Messaging Button
+iv) Enter your mobile number to register with telegram service.
+
+--- Original PDF page 5 ---
+5 | P a g e
+
+v)Search for name “BotFather”.
+
+vi) Click on ”BotFather”
+
+--- Original PDF page 6 ---
+6 | P a g e
+
+vii)To start “BotFather” type /start in message.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+viii) Now type /newbot in message and then give name to your BOT and Username also:
+
+--- Original PDF page 7 ---
+7 | P a g e
+
+ix) Obtain access token:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This same token we are supposed to use in our code in raspberry pi to connect to our BOT.
+
+6.Procedure
+Set up On Raspberry Pi:
+1. Install "Python Package Index" and Telepot using:
+python3 -m pip config set global.break-system-packages true
+sudo apt install python3-pip
+pip3 install telepot
+2.Test your bot using python3 IDLE and type:
+import telepot
+bot = telepot.Bot('Bot Token')
+bot.getMe()
+
+--- Original PDF page 8 ---
+8 | P a g e
+
+If it prints your bot details means everything is correct.
+If not then token is wrong.ii. Connection of LED to Raspi.:
+• Connect LEDs on breadboard
+• Connect resistor to one end of led (to Positive end or anode).
+• Connect other end of resistor to GPIO pin on raspberry Pi.
+• Connect other end of LED to ground (negative end or cathode).
+
+--- Original PDF page 9 ---
+9 | P a g e
+
+7. Implementation with Python Code
+Question 1: Write a program to control single LED
+
+Code:
+import sys
+import time
+import random
+import datetime
+import telepot
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(11, GPIO.OUT)
+def handle(msg):
+chat_id = msg['chat'] ['id']
+command = msg['text']
+try:
+print 'Got command:', command
+if command == 'on':
+bot.sendMessage(chat_id, "LED on")
+GPIO.output(11,GPIO.HIGH)
+elif command =='off':
+bot.sendMessage(chat_id, "LED off")
+GPIO.output(11,GPIO.LOW)
+elif command == 'stop':
+exit()
+bot = telepot.Bot('Bot Token')
+bot.message_loop(handle)
+print 'I am listening...'
+
+--- Original PDF page 10 ---
+10 | P a g e
+
+while 1:
+time.sleep(10)
+except TelegramError:
+print ‘’
+
+Note: do not forget to replace 'Bot Token' with your token received from telegram
+
+8. Results:
+a) For Single LED

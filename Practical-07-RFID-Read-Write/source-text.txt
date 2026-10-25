@@ -1,0 +1,116 @@
+--- Original PDF page 24 ---
+24 | P a g e
+
+PRACTICAL-7
+
+1. Aim
+Interface RFID module with Raspberry Pi to read and write to RFID tags/cards
+
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) SPI Communication interface.
+
+3. New Concepts
+Interfacing RFID with Raspi.
+
+4. Hardware Required
+i) RFID RC522 Reader Module
+
+
+
+
+ii)Few RFID Cards or RFID Tags
+iii) Jumper Wires
+
+--- Original PDF page 25 ---
+25 | P a g e
+
+5. Procedure
+
+Pin Connection
+RFID Module PIN RPi Pin Function
+SDA 24 GPIO 8(SPIO CS0)
+SCK 23 GPIO 11(SPIO SCLK)
+MOSI 19 GPIO 10(SPIO MOSI)
+MISO 21 GPIO 9(SPIO MISO)
+GND 6 GND(Ground)
+RST 22 GPIO 25
+3.5v 1 3.3V
+
+--- Original PDF page 26 ---
+26 | P a g e
+
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+sudo apt install idle3
+
+Setting up Raspberry Pi for Serial Communication
+
+sudo raspi-config
+
+In the "Interfacing Options", select the "Serial" option.
+
+Select "Yes" option.
+
+Finish the process and Reboot the Raspberry Pi.
+
+Following are the terminal command that needs to be executed.
+sudo apt update
+
+python3 -m pip install spidev
+
+pip install mfrc522
+
+6. Implementation with Python Code
+Code:
+import RPI.GPIO as GPIO
+from mfrc522 import SimpleMFRC522
+from time import sleep
+
+reader = SimpleMFRC522()
+print("Welcome to RFID Practical")
+while True:
+
+--- Original PDF page 27 ---
+27 | P a g e
+
+print("")
+print ("Choose your Option")
+print("1. Write your Tag")
+print("2. Read your Tag")
+print("3. Delete the content")
+print("Press any key to Exit")
+print("")
+a=input("Enter your option:")
+
+if a=="1":
+text=input("New data: ")
+print("Now Place your Tag to write")
+reader.write(text)
+print("Written")
+sleep(1)
+
+elif a=="2":
+print("Now Place your Tag to read")
+id, text=reader.read()
+print(id)
+print(text)
+sleep(1)
+
+elif a=="3":
+print("Now Place your Tag to Reset")
+reader.write(text)
+print("Data Deleted")
+sleep(1)
+
+--- Original PDF page 28 ---
+28 | P a g e
+
+else:
+break
+
+GPIO.cleanup()
+
+[Note: now place the RFID cards one by one over RFID module to check the output
+
+7. Results:

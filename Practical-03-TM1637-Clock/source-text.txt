@@ -1,0 +1,57 @@
+--- Original PDF page 11 ---
+11 | P a g e
+
+PRACTICAL -3
+
+1.Aim:
+Interface TM1637 with Raspberry Pi and Display current time.
+
+2.Prior Concepts:
+i) Concept of Python Programming
+ii) Concept of 7 Segment Displays.
+
+3.New Concepts:
+i) Hardware connection of 7 seg with Raspi.
+Display current time on 7 segments.
+
+4. Hardware Requirement and PIN Connection.:
+i) TM1637 4-digit seven segment Display board.
+ii) Jumper wires
+
+Pin Connection
+TM1637 PIN Function RPi Pin Function
+1 GND(Ground) 6 Ground
+2 VCC(+5V Power) 2 5V
+3 DIN(Data In) 38 GPIO 20
+4 CLK(Clock) 40 GPIO 21
+
+5.Procedure:
+
+Install Libraries of TM1637 as tm1637.py which is driver library. Download and save it in
+same folder as the main program code.
+
+--- Original PDF page 12 ---
+12 | P a g e
+
+Write the below code:
+#!/usr/bin/python
+
+import time
+import datetime
+import tm1637 as obj
+
+Display = obj. TM1637(CLK=21, DIO=20, brightness=5.0)
+Display.Clear()
+
+while(True):
+now = datetime.datetime.now()
+hour = now.hour
+minute = now.minute
+second = now.second
+Display.Clear()
+val = [(int(hour /10)), (hour % 10), (int(minute / 10)), (minute % 10) ]
+Display.Show(val)
+Display.ShowDoublepoint((second % 2))
+time.sleep(0.25)
+
+6. Results:

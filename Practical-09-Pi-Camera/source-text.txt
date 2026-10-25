@@ -1,0 +1,90 @@
+--- Original PDF page 39 ---
+39 | P a g e
+
+PRACTICAL-9
+
+1.Aim
+Interface Pi Camera with Raspberry Pi to capture image and video.
+
+2. Prior Concepts
+i) Basics of Raspberry Pi and Linux OS.
+ii) Python programming fundamentals.
+iii) GPIO and peripheral interfacing concepts.
+
+3. New Concepts
+i) Working of the Pi Camera Module.
+ii) CSI (Camera Serial Interface) communication.
+iii) Capturing images using Python.
+iv) Recording videos using Python.
+v) Using the picamera2 library.
+vi) Camera preview and media storage handling.
+
+4. Hardware Required
+i) Raspberry Pi Camera Module
+
+
+
+
+
+
+ii) Few RFID Cards or RFID Tags
+iii)Jumper Wires
+
+--- Original PDF page 40 ---
+40 | P a g e
+
+
+5. Procedure
+Connect the finger print module to any one of the USB port of Raspi
+i)Install Python3 on Raspi.
+Write the below code in command prompt:
+sudo apt install idle3
+sudo apt install python3-picamera2 -y
+sudo apt install libcamera-apps -y
+pip install opencv-python
+pip install numpy
+
+6. Implementation with Python Code
+Code:
+from picamera2 import Picamera2
+from time import sleep
+
+#Initialize camera
+pícam2 = Picamera2()
+
+#Start camera
+picam2.start()
+
+--- Original PDF page 41 ---
+41 | P a g e
+
+
+# Allow camera to warm up
+sleep(2)
+#------------------------------
+#Capture Image
+#-----------------------------
+picam2.capture_file("captured_image.jpg")
+print("Image Captured Successfully")
+
+#----------------------------
+# Record Video
+#----------------------------
+print("Video Recording Started")
+
+#Start video recording
+picam2.start_recording("captured_video.h264")
+
+# Record for 10 seconds
+sleep(10)
+
+#Stop recording
+picam2.stop_recording()
+
+print("Video Recorded Successfully")
+
+#Stop camera
+picam2.stop()
+
+print("Program Completed")
+7. Results:

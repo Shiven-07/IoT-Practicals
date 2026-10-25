@@ -1,0 +1,79 @@
+--- Original PDF page 21 ---
+21 | P a g e
+
+PRACTICAL-6
+1.Aim
+Interface 16x2 LCD with Raspberry Pi using 12C module to display text.
+
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) LCD function and use.
+
+3. New Concepts
+Hardware connection of 16 X 2 LCD with Raspi using I2C Module.
+
+4. Hardware Requirement and PIN Connection.
+i) Raspberry Pi 4
+ii) 12C LCD Module (PCF8574)
+iii) Jumper Wires
+
+Pin Connection
+LCD I2C Module PIN RPi Pin Function
+GND(Ground) 6 GND(Ground)
+VCC(+5V Power) 2 5V
+SDA 3 GPIO 2(SDA1)
+SCL 5 GPIO 3(SCL1)
+
+--- Original PDF page 22 ---
+22 | P a g e
+
+
+
+5. Procedure
+i) Enable I2C Interface on Raspberry Pi by writing below code in command terminal
+sudo raspi-config
+ii) Navigate:
+Interface Options
+→ I2C
+→ Enable
+iii) Reboot Raspi by writing below code in command terminal
+sudo reboot
+iv) Install I2C Tools by writing below code in command terminal
+sudo apt update
+sudo apt install -y i2c-tools python3-smbus
+
+Verify whether LCD is detected
+sudo i2cdetect -y 1
+Expected Output:
+0123456789abcdef
+20:-- -- -- -- -- -- 27 -- -- -- -- --
+Note: The LCD address is typically Ox27 or Ox3F,
+
+--- Original PDF page 23 ---
+23 | P a g e
+
+v)Install Install LCD Library on Raspberry Pi by writing below code in command terminal.
+pip3 install RPLCD
+Write the below code:
+from RPLCD.i2c import CharLCD
+from time import sleep
+
+Icd = CharLCD(
+i2c_expander='PCF8574',
+address=0x27,
+port=1,
+cols=16,
+rows=2
+)
+I
+cd.clear()
+
+Icd.write_string("Hello Students!")
+Icd.cursor_pos = (1, 0)
+Icd.write_string("Raspberry Pi 4")
+
+sleep(10)
+
+Icd.clear()
+
+6. Results:

@@ -1,0 +1,114 @@
+--- Original PDF page 78 ---
+sudo apt install idle3
+Install Node-RED Dashboard:
+cd ~/.node-red
+npm install node-red-dashboard
+Restart Node-RED:
+node-red-stop
+node-red-start
+6. Execution
+Now open Node Red in browser:
+http://<RaspberryPi-IP>:1880
+
+                                           PRACTICAL-18
+1.Aim
+Write a program to read the CPU%, Memory% and CPU temperature of Raspberry Pi,
+2. Prior Concepts
+i) Linux operating system fundamentals
+ii) Processor and memory concepts.
+3. New Concepts
+i)  System performance monitoring.
+ii) CPU utilization measurement.
+
+--- Original PDF page 79 ---
+iii) Memory utilization analysis.
+iv) Using the psutil library.
+v) Health monitoring of lot devices.
+4. Software Required
+i) psutil Library
+5. Concept:
+CPU Utilization: CPU utilization indicates the percentage of processor resources currently in
+use.
+0% →Idle Processor
+100% →Fully Utilized Processor
+Vemory Utilization: Memory utilization represents the percentage of RAM currently stupied
+by running programs and processes.
+DU Temperature: CPU temperature helps determine the thermal condition of the processor.
+Excessive temperature may affect performance and reliability.
+Typical Raspberry Pi 4 temperatures:
+Temperature Status
+35°C-55°C Normal
+55°C-70°C Moderate Load
+70°C-80°C High Load
+>80°C Thermal Throttling Possible
+6. Procedure
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+
+--- Original PDF page 80 ---
+Sudo apt install idle3
+Install Libraries
+sudo apt update
+pip3 install psutil
+7. Main Program
+import psutil
+import os
+import time
+while True:
+cpu_percent = psutil.cpu_percent(interval=1)
+memory_percent = psutil.virtual_memory().percent
+temp = os.popen(
+"vcgencmd measure_temp"
+).readline()
+cpu_temp = temp.replace(
+"temp=",
+""
+).replace(
+"C\n",
+""
+
+--- Original PDF page 81 ---
+)
+print("\n---------------------")
+print(" Raspberry Pi 4 Monitoring")
+print("----------------------")
+print(
+f'CPU Usage: {cpu_percent)%"
+)
+print(
+f'Memory Usage: {memory_percent)%"
+)
+print(
+f'CPU Temperature: {cpu_temp} °C"
+)
+time.sleep(2)
+8. Result:
+Input IMAGE
+Raspberry Pi 4 Monitoring
+--------------------------
+CPU Usage: 18.5%
+Memory Usage: 42.3%
+
+--- Original PDF page 82 ---
+CPU Temperature: 49.8 °C
+---------------------------
+Raspberry Pi 4 Monitoring
+----------------------------
+CPU Usage: 24.1%
+Memory Usage: 43.7%
+CPU Temperature: 50.1 °C
+
+                                  PRACTICAL-19
+1. Aim
+Design and implement an embedded access -control prototype that grants entry only when
+either a whitelisted RFID tag is detected or a legitimate fingerprint is verified, provides real -
+time visual feedback on an LCD, indicates status via an LED, and pulses a relay active-LOW)
+to unlock for a fixed interval. The system must log all events (time, method, esult) for
+auditability.
+2. Prior Concepts
+i) Concept of Python Programming
+ii) Basics of RFID technology
+iii) Basics of biometric authentication
+vi) SPI communication protocol
+v) UART communication protocol
+vi) 12C communication protocol

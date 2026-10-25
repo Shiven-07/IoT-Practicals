@@ -1,0 +1,2 @@
+pyfingerprint
+RPi.GPIO

@@ -1,0 +1,110 @@
+--- Original PDF page 42 ---
+42 | P a g e
+
+PRACTICAL-10
+
+1.Aim
+   Design loT based home automation system using Raspberry Pi.
+
+2. Prior Concepts
+i) Concept of Python Programming
+ii) Working of relay modules
+iii) Basic networking concepts
+
+3. New Concepts
+i) loT-based remote appliance control
+ii)Interfacing relay modules with Raspberry Pi
+iii) Web-based appliance automation
+iv) Flask web server programming
+v)GPIO control using Python
+vi) Smart home automation concepts
+
+4. Hardware Required
+i) Relay Module (2-channel)
+
+--- Original PDF page 43 ---
+43 | P a g e
+
+ii)Blub
+iii)DC Fan
+iv) Jumper Wires
+
+5.Procedure
+Pin Connection
+
+i) Install Python3 on Raspi.
+
+Write the below code in command prompt:
+sudo apt install idle3
+pip install flask
+pip install RPi.GPIO
+
+6. Implementation with Python Code
+Code:
+from flask import Flask
+import RPi.GPIO as GPIO
+
+--- Original PDF page 44 ---
+44 | P a g e
+
+
+app = Flask(name)
+
+#GPIO Setup
+GPIO.setmode(GPIO.BCM)
+
+LIGHT = 17
+FAN = 27
+GPIO.setup(LIGHT, GPIO.OUT)
+GPIO.setup (FAN, GPIO.OUT)
+
+GPIO.output(LIGHT, GPIO.LOW)
+GPIO.output(FAN, GPIO.LOW)
+
+@app.route('/')
+def home():
+return "’
+<h1>loT Home Automation</h1>
+
+<h3>Light </h3>
+<a href="/light/on">ON</a><br><br>
+<a href="/light/off">OFF</a><br><br>
+<h3>Fan</h3>
+<a href="/fan/on">ON</a><br><br>
+<a href="/fan/off">OFF</a>
+“’
+@app.route("/light/on')
+def light_on():
+GPIO.output(LIGHT, GPIO.HIGH)
+return "Light ON"
+
+--- Original PDF page 45 ---
+45 | P a g e
+
+@app.route('/light/off')
+def light_off():
+GPIO.output(LIGHT, GPIO.LOW)
+return "Light OFF"
+
+@app.route('/fan/on')
+def fan_on():
+GPIO.output(FAN, GPIO.HIGH)
+return "Fan ON"
+
+@app.route('/fan/off')
+def fan_off():
+GPIO.output (FAN, GPIO.LOW)
+return "Fan OFF"
+
+if name ==' _main':
+app.run(host='0.0.0.0', port=5000)
+
+7. Execute the above Program:
+i)Run the above Program
+ii) Find Raspi IP Address, by executing below command on command prompt:
+hostname -I
+Eg: 192.168.1.10
+iii) Open Web Interface on mobile or laptop and enter the IP address in browser
+Eg: http://192.168.1.10:5000
+
+8. Result:

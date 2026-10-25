@@ -1,0 +1,6 @@
+pyfingerprint
+mfrc522
+RPi.GPIO
+spidev
+RPLCD
+smbus2

@@ -1,0 +1,196 @@
+--- Original PDF page 64 ---
+GPIO.output(FAN, GPIO.LOW)
+    return "Fan OFF"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+7. Execute the Above Program
+i) Run the above Program.
+ii) Find Raspi IP Address, by executing below command on command prompt:
+  hostname -I
+Eg: 192.168.1.10
+iii) Open Web Interface on mobile or laptop and enter the IP address in browser.
+Eg: http://192.168.1.10:5000
+8. Result
+The web dashboard using Flask is designed successfully to control the relay module via the
+web.
+
+PRACTICAL – 15
+1. Aim
+Create two factor authentication system by interfacing fingerprint sensor, RFID reader with
+Raspberry Pi.
+2. Prior Concepts
+i) Concept of Python Programming.
+
+--- Original PDF page 65 ---
+ii) Basics of serial (UART) communication.
+iii) Basics of SPI communication.
+iv) Basics of I2C communication.
+v) Understanding of biometric systems.
+3. New Concepts
+i) Designing a Two-Factor Authentication (2FA) system.
+ii) Integrating multiple authentication devices in a single application.
+iii) Displaying authentication status on I2C LCD.
+4. Hardware Required
+i) MFRC522 RFID Reader
+ii) R307/AS608 Fingerprint Sensor
+iii) 16×2 LCD with I2C (PCF8574)
+iv) Jumper Wires
+5. Procedure
+Pin Connection
+RFID Pin Raspberry Pi Pin
+SDA (SS) GPIO8 (CE0)
+SCK GPIO11
+MOSI GPIO10
+MISO GPIO9
+RST GPIO25
+
+--- Original PDF page 66 ---
+GND GND
+3.3V 3.3V
+
+Fingerprint Raspberry Pi
+VCC 5V
+GND GND
+TX GPIO15 (RXD)
+RX GPIO14 (TXD)
+
+LCD Raspberry Pi
+VCC 5V
+GND GND
+SDA GPIO2
+SCL GPIO3
+
+Input IMAGE
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+
+--- Original PDF page 67 ---
+sudo apt install idle3
+Enable following Interfaces:
+ sudo raspi-config
+SPI -> Enable
+I2C -> Enable
+UART -> Enable
+ sudo reboot
+Install Libraries
+   sudo apt update
+ pip3 install pyfingerprint
+ pip3 install mfrc522
+ pip3 install RPLCD
+ pip3 install RPLCD-i2c
+ pip3 install spidev
+ pip3 install RPi.GPIO
+6. Implementation with Python Code
+Code:
+from pyfingerprint.pyfingerprint import PyFingerprint
+from mfrc522 import SimpleMFRC522
+from RPLCD.i2c import CharLCD
+import RPi.GPIO as GPIO
+from time import sleep
+
+# ------------- LCD -------------
+lcd = CharLCD('PCF8574', 0x27)
+
+--- Original PDF page 68 ---
+# ------------- RFID -------------
+reader = SimpleMFRC522()
+
+AUTHORIZED_UID = 123456789012
+
+# ------------- Buzzer -------------
+
+BUZZER = 18
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BUZZER, GPIO.OUT)
+
+# ------------- Fingerprint -------------
+
+try:
+    finger = PyFingerprint(
+        '/dev/serial0',
+        57600,
+        0xFFFFFFFF,
+        0x00000000
+    )
+
+    if not finger.verifyPassword():
+        raise ValueError()
+
+except Exception:
+    print("Fingerprint Sensor Error")
+    exit()
+
+# ------------- Functions -------------
+
+def buzzer_beep(times):
+    for i in range(times):
+
+--- Original PDF page 69 ---
+GPIO.output(BUZZER, 1)
+sleep(0.2)
+GPIO.output(BUZZER, O)
+sleep(0.2)
+def Icd_msg(line1, line2=""):
+Icd.clear()
+Icd.write_string(line1)
+if line2:
+Icd.crif()
+Icd.write_string(line2)
+#--------------------Main Program-------------
+while True:
+Icd_msg("Scan RFID Card")
+try:
+uid, text = reader.read()
+if uid == AUTHORIZED_UID:
+Icd_msg("RFID Matched")
+buzzer_beep(1)
+sleep(2)
+Icd_msg("Place Finger")
+
+--- Original PDF page 70 ---
+while not finger.readImage():
+finger.convertImage(0x01)
+result = finger.searchTemplate()
+position Number = result[0]
+if position Number >= 0:
+Icd_msg("Fingerprint", "Matched")
+buzzer_beep(2)
+sleep(2)
+lcd_msg("ACCESS", "GRANTED")
+print("ACCESS GRANTED")
+else:
+lcd_msg("Fingerprint", "Unmatched")
+buzzer_beep(4)
+sleep(2)
+Icd_msg("ACCESS", "DENIED")
+print("Fingerprint Failed")
+else:
+Icd_msg("RFID", "Unmatched")
+buzzer_beep(4)
+sleep(2)
+
+--- Original PDF page 71 ---
+Icd_msg("ACCESS", "DENIED")
+print("Unauthorized RFID")
+except KeyboardInterrupt:
+GPIO.cleanup()
+Break
+7. Result:
+
+PRACTICAL – 16
+1. Aim
+Create a motion detector by interfacing camera and 16X2 display with Raspberry Pi, Print the
+appropriate message on the display.
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) Basics of camera operation.
+iii) Basics of 12C communication.
+iv) Interfacing 16x2 LCD with Raspberry Pi.
+v) Basic image processing concepts.
+3. New Concepts
+i)  Motion detection using computer vision.
+ii) Raspberry Pi Camera interfacing.

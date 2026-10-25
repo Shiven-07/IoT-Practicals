@@ -1,0 +1,135 @@
+--- Original PDF page 56 ---
+print("Bulb Remains OFF")
+
+    GPIO.output(RELAY_PIN, GPIO.LOW)
+
+    sleep(2)
+7. Result:
+
+                                             PRACTICAL – 13
+1. Aim
+Implement basic Publisher – Subscriber using MQTT. Publish messages using mqtt. Subscribe
+and control LED.
+2. Prior Concepts
+i) Basic Raspberry Pi architecture and GPIO programming.
+ii) Client–Server communication.
+iii) Command-line operations in Linux.
+3. New Concepts
+i) MQTT publish-subscribe communication model.
+ii) Working of MQTT broker, publisher and subscriber.
+iii) Using Paho MQTT library in Python.
+iv) Event-driven programming using MQTT callbacks.
+v) Building cloud-ready IoT applications.
+4. Hardware Required
+
+--- Original PDF page 57 ---
+i) LED
+ii) 220 Ω Resistor
+iii) Jumper Wires
+5. Procedure
+Pin Connection
+LED Connection
+LED Pin Raspberry Pi 4
+Anode (+) GPIO18 (Pin 12) through 220Ω resistor
+Cathode (-) GND (Pin 6)
+Input IMAGE
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+ sudo apt install idle3
+Install MQTT Broker:
+
+ sudo apt update
+ sudo apt install mosquitto mosquitto-clients -y
+Enable broker:
+ sudo systemctl enable mosquitto
+ sudo systemctl start mosquitto
+Install Paho MQTT:
+
+--- Original PDF page 58 ---
+pip3 install paho-mqtt
+6. Implementation with Python Code
+Subscriber Code (LED Control):
+import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
+
+LED = 18
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED, GPIO.OUT)
+
+BROKER = "localhost"
+TOPIC = "iot/led"
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected")
+    client.subscribe(TOPIC)
+
+def on_message(client, userdata, msg):
+
+    message = msg.payload.decode()
+
+    print("Received:", message)
+
+    if message.upper() == "ON":
+        GPIO.output(LED, GPIO.HIGH)
+        print("LED ON")
+
+    elif message.upper() == "OFF":
+        GPIO.output(LED, GPIO.LOW)
+        print("LED OFF")
+
+--- Original PDF page 59 ---
+client = mqtt.Client()
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.connect(BROKER, 1883, 60)
+
+client.loop_forever()
+Publisher Code:
+import paho.mqtt.client as mqtt
+
+broker = "localhost"
+topic = "iot/led"
+
+client = mqtt.Client()
+
+client.connect(broker, 1883, 60)
+
+while True:
+
+    msg = input("Enter ON/OFF : ")
+
+    client.publish(topic, msg)
+
+    print("Published :", msg)
+7. Execution Step
+Terminal 1: Run Subscriber
+ python3 subscriber.py
+
+--- Original PDF page 60 ---
+Terminal 2: Run Publisher
+ python3 publisher.py
+8. Result
+Subscriber Terminal:
+Connected
+Received: ON
+LED ON
+Received: OFF
+LED OFF
+Publisher Terminal:
+text
+Enter ON/OFF : ON
+Published : ON
+Enter ON/OFF : OFF
+Published : OFF
+
+
+
+                                          PRACTICAL – 14
+1. Aim
+Design a web dashboard using Flask. Control relay module via web.
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) Working of relay modules.

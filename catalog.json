@@ -1,0 +1,301 @@
+[
+  {
+    "practical": 1,
+    "title": "LED blinking patterns",
+    "path": "Practical-01-LED-Patterns",
+    "pdf_pages": [
+      1,
+      3
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Restored the finally-block indentation; combined repeated output calls without changing the sequence."
+  },
+  {
+    "practical": 2,
+    "title": "Control an LED using Telegram",
+    "path": "Practical-02-Telegram-LED-Control",
+    "pdf_pages": [
+      4,
+      10
+    ],
+    "files": [
+      "main.py",
+      ".env.example",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Converted Python 2 print statements to Python 3; restored indentation; removed the undefined TelegramError block; stop now signals the main thread; added cleanup and a chat-ID allowlist. Uses the PDF legacy telepot library, whose live service compatibility has not been tested."
+  },
+  {
+    "practical": 3,
+    "title": "Display the current time on TM1637",
+    "path": "Practical-03-TM1637-Clock",
+    "pdf_pages": [
+      11,
+      12
+    ],
+    "files": [
+      "main.py"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Restored indentation and removed repeated clearing. The PDF does not supply the driver. Packages sharing the tm1637 name can have different APIs; do not substitute blindly."
+  },
+  {
+    "practical": 4,
+    "title": "Read coordinates from a GPS module",
+    "path": "Practical-04-GPS-Module",
+    "pdf_pages": [
+      13,
+      16
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Restored indentation; added GNGGA support, malformed-sentence handling and no-fix handling. Source command spacing errors include ls /dev/serial*, cgps -s and gpsd /dev/serial0 -F /var/run/gpsd.sock. The daemon approach is an alternative, not a prerequisite for this direct-serial script."
+  },
+  {
+    "practical": 5,
+    "title": "Plot ADS1115 gas-sensor readings",
+    "path": "Practical-05-ADS1115-Live-Plot",
+    "pdf_pages": [
+      17,
+      20
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Fixed plt/pit and y_vals capitalization, split joined statements and restored indentation. Updated the ADS1x15 imports/channel API to the upstream example. Set a 0-4.096 V plot scale matching gain 1; the configured scale is not permission to exceed the ADC supply/input limits. This slow plot is not a general-purpose oscilloscope."
+  },
+  {
+    "practical": 6,
+    "title": "Display text on a 16x2 I2C LCD",
+    "path": "Practical-06-I2C-LCD",
+    "pdf_pages": [
+      21,
+      23
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Fixed Icd/lcd inconsistencies and the broken lcd.clear call; added clear/close cleanup."
+  },
+  {
+    "practical": 7,
+    "title": "Read and write RFID tags",
+    "path": "Practical-07-RFID-Read-Write",
+    "pdf_pages": [
+      24,
+      28
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Fixed RPI.GPIO capitalization and indentation. Clear now writes empty text rather than an undefined or previous text variable. Enable SPI; the source Serial instructions do not configure this SPI reader. Clearing text does not change the UID."
+  },
+  {
+    "practical": 8,
+    "title": "Enroll, search and delete fingerprints",
+    "path": "Practical-08-Fingerprint-Management",
+    "pdf_pages": [
+      29,
+      38
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Reconstructed malformed functions, strings and method names (convertImage/createTemplate), corrected /dev/ttyUSB0 and hex values, restored the entry point, and added duplicate-enrollment return plus sensor-capacity validation. A generic USB fingerprint scanner is not automatically compatible with pyfingerprint."
+  },
+  {
+    "practical": 9,
+    "title": "Capture an image and video",
+    "path": "Practical-09-Pi-Camera",
+    "pdf_pages": [
+      39,
+      41
+    ],
+    "files": [
+      "main.py"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Normalized the picam2 variable and replaced the invalid one-argument start_recording call with H264Encoder plus an output path. Added explicit still/video configuration and cleanup. Ignore copied RFID/fingerprint instructions in the source camera section."
+  },
+  {
+    "practical": 10,
+    "title": "Home automation using Flask",
+    "path": "Practical-10-Home-Automation",
+    "pdf_pages": [
+      42,
+      45
+    ],
+    "files": [
+      "app.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Fixed __name__, the main guard, quotes and indentation. Added return links and output cleanup. This deliberately simple lab server has no login or CSRF protection; do not expose it publicly."
+  },
+  {
+    "practical": 11,
+    "title": "Show fingerprint match status on an LCD",
+    "path": "Practical-11-Fingerprint-LCD",
+    "pdf_pages": [
+      46,
+      50
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Normalized formatting, added a short polling delay and LCD cleanup. Use RPLCD with its i2c module; the source RPLCD-i2c package name is not required."
+  },
+  {
+    "practical": 12,
+    "title": "Simulate a fingerprint door lock with a relay",
+    "path": "Practical-12-Fingerprint-Relay",
+    "pdf_pages": [
+      51,
+      56
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Moved the match decision inside the polling loop, restored indentation, added initial output state and shutdown cleanup. Polarity differs from Practical 19: configure it for the actual relay."
+  },
+  {
+    "practical": 13,
+    "title": "MQTT publisher and LED subscriber",
+    "path": "Practical-13-MQTT-Publish-Subscribe",
+    "pdf_pages": [
+      56,
+      60
+    ],
+    "files": [
+      "subscriber.py",
+      "publisher.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Separated publisher/subscriber files. Updated callback signatures to Paho API VERSION2 and constrained requirements to Paho 2.x. Added the publisher network loop and delivery wait; subscriber cleans up GPIO."
+  },
+  {
+    "practical": 14,
+    "title": "Control relays with a Flask dashboard",
+    "path": "Practical-14-Flask-Dashboard",
+    "pdf_pages": [
+      60,
+      64
+    ],
+    "files": [
+      "app.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "The PDF repeats the home-automation implementation under a dashboard aim. Both numbered folders are preserved. Added return links and cleanup; no production authentication is implied."
+  },
+  {
+    "practical": 15,
+    "title": "RFID and fingerprint two-factor demonstration",
+    "path": "Practical-15-Two-Factor-Authentication",
+    "pdf_pages": [
+      64,
+      71
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Repaired identifiers, indentation and the missing waiting-loop body. Uses BOARD numbering to agree with the RFID driver and avoid its BCM reset-pin ambiguity. No example UID is authorized by default. Added cleanup and a timeout. As in the source, any enrolled fingerprint can follow the configured card; it does not bind a particular finger to a particular card."
+  },
+  {
+    "practical": 16,
+    "title": "Camera motion detection with LCD feedback",
+    "path": "Practical-16-Motion-Detection",
+    "pdf_pages": [
+      71,
+      76
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Repaired Picamera2/cv2 imports, dictionary syntax, names, indentation and LCD configuration. Chose RGB888 output with the documented OpenCV BGR interpretation; added camera/LCD cleanup. Lighting changes can trigger this simple detector."
+  },
+  {
+    "practical": 17,
+    "title": "Node-RED dashboard and push-button LED control",
+    "path": "Practical-17-Node-RED-Dashboard",
+    "pdf_pages": [
+      76,
+      78
+    ],
+    "files": [
+      "GUIDE.md"
+    ],
+    "status": "Guide only; flow missing in source",
+    "changes": "No runnable flow has been invented or labeled as extracted. The guide records the required five-second override behavior and what must be supplied by the lab."
+  },
+  {
+    "practical": 18,
+    "title": "Monitor CPU, memory and temperature",
+    "path": "Practical-18-System-Monitor",
+    "pdf_pages": [
+      78,
+      82
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Repaired indentation, quotes and f-strings; replaced shell-based temperature reading with a bounded subprocess call and numeric parsing."
+  },
+  {
+    "practical": 19,
+    "title": "RFID or fingerprint access control with logging",
+    "path": "Practical-19-Access-Control-Logging",
+    "pdf_pages": [
+      82,
+      98
+    ],
+    "files": [
+      "main.py",
+      "requirements.txt"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Reconstructed the damaged code, restored the absent main polling loop, corrected serial0/identifiers/strings, and made GPIO numbering consistently BOARD for the RFID driver. Added initial locked state and finally blocks that restore the relay after an interrupted pulse. Empty whitelist rejects all RFID tags until configured. This exercise is OR authentication, unlike Practical 15. It is a lab prototype, not a deployed door-security system."
+  },
+  {
+    "practical": 20,
+    "title": "Windows IoT Core UWP demonstration",
+    "path": "Practical-20-Windows-IoT-Core",
+    "pdf_pages": [
+      98,
+      100
+    ],
+    "files": [
+      "MainPage.xaml.cs",
+      "MainPage.xaml"
+    ],
+    "status": "Adapted code; hardware untested",
+    "changes": "Normalized the namespace to HelloIoT and formatting; added a minimal matching XAML page because InitializeComponent needs generated XAML support. The PDF supplies no full project or actual screenshots in its Input IMAGE placeholders. Do not assume that an image for an older Pi supports Raspberry Pi 4; confirm the lab board/image first."
+  }
+]

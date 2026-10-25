@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+captured_image.jpg
+captured_video.h264
+access_log.csv
+.vs/
+bin/
+obj/
+.DS_Store

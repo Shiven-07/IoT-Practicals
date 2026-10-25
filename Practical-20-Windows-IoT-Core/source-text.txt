@@ -1,0 +1,54 @@
+--- Original PDF page 98 ---
+GPIO.cleanup()
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+if_name__ = = "__main__":
+main()
+7. Result :
+
+                             PRACTICAL-20
+1. Aim
+install Windows IoT 10 core on Raspberry pi and run the demo program.
+2. Prior Concepts
+i) Basic computer architecture and operating systems.
+ii) Windows operating system basics.
+iii) Microprocessor and microcontroller fundamentals.
+iv) Basic networking concepts (IP address, Ethernet, Wi-Fi).
+3. New Concepts
+i) Windows 10 IoT Core operating system.
+ii) Deployment of Windows lot on Raspberry Pi.
+iii) Using Windows IoT Dashboard.
+iv) Universal Windows Platform (UWP) applications.
+4. Procedure
+
+--- Original PDF page 99 ---
+1 Go to the Windows 10 developer center.
+2 Click Get Windows 10 IoT Core Dashboard to download the necessary application.
+Input IMAGE(4)
+3. Writing Windows IoT Core Image to SD Card
+Input IMAGE(3)
+4. Windows IoT Core Startup Screen
+Input IMAGE(3)
+5. Raspbrrry Pi Appearing in IoT Dashboard
+Input IMAGE(5)
+6. Raspberry Pi Device Portal in Browser
+Input IMAGE(4)
+5. Demo Application:
+Display a simple message on the Raspberry Pi screen. (C# UWP):
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+namespace HelloloT
+{
+public sealed partial class MainPage: Page
+
+--- Original PDF page 100 ---
+{
+public MainPage()
+{
+this.InitializeComponent();
+TextBlock txt = new TextBlock();
+txt.Text = "Hello Windows IoT Core!";
+txt.FontSize = 40;
+this.Content = txt;
+        }
+    }
+}

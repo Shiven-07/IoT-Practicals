@@ -1,0 +1,300 @@
+--- Original PDF page 29 ---
+29 | P a g e
+
+
+PRACTICAL -8
+
+1.Aim
+Interface Fingerprint Sensor with Raspberry Pi.
+
+2.Prior Concepts
+i) Concept of Python Programming.
+ii) SPI Communication interface.
+
+3. New Concepts
+Hardware connection of fingerprint sensor.
+
+4. Hardware Required
+i) USB to TTL converter.
+
+--- Original PDF page 30 ---
+30 | P a g e
+
+
+ii)Fingerprint Module
+
+
+
+
+
+
+
+
+
+iii) Jumper Wire
+
+5.Procedure
+Connect the finger print module to any one of the USB port of Raspi.
+
+
+
+
+
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+sudo apt install idle3
+Setting up Raspberry Pi for Serial Communication
+
+sudo raspi-config
+
+In the "Interfacing Options", select the "UART" option.
+
+Select "Yes" option.
+
+--- Original PDF page 31 ---
+31 | P a g e
+
+Finish the process and Reboot the Raspberry Pi.
+
+Following are the terminal command that needs to be executed.
+
+sudo apt update
+
+pip install pyfingerprint
+
+6. Implementation with Python Code
+Code:
+#l/usr/bin/env python_
+#-- coding: utf-8--
+
+import time
+import RPi.GPIO as GPIO
+import sys
+from threading import Thread
+from pyfingerprint.pyfingerprint import PyFingerprint
+
+#############GP|O configuration#######
+GPIO.setwarnings(False)
+GPIO.cleanup()
+GPIO.setmode (GPIO.BCM)
+######################################
+
+################## Glоbаl Vагiablеs #############
+#Initialize Fingerprint Module object
+try:
+fingerprint_module = PyFingerprint('/dev/ttyUSBO', 57600,
+OxFFFFFFFF,0x00000000)
+if (fingerprint_module.verifyPassword() == False ):
+
+--- Original PDF page 32 ---
+32 | P a g e
+
+raise ValueError('The given fingerprint sensor password is wrong!')
+except Exception as e:
+print('Exception message: '+ str(e))
+exit(1)
+
+#####################User function############################
+def delayms(time_in_msec):
+time.sleep( (time_in_msec/1000))
+pass
+
+def delaysec(time_in_sec):
+time.sleep(time_in_sec)
+
+def enrollFingerInDB():
+print ("Enroll your Finger into Fingerprint Database")
+
+==========Start============
+try:
+print('Keep your finger...')
+
+# wait till the person keep finger on module
+while (fingerprint_module.readImage() == False ):
+pass
+# Transform read fingeprint image to characteristics and stores
+charbuffer 1
+fingerprint_module.convertlmage(0x01)
+
+# Checks for duplicate template in database
+result = fingerprint_module.searchTemplate()
+positionNumber = result[0]
+
+--- Original PDF page 33 ---
+33 | P a g e
+
+if (positionNumber >= 0):
+print('This fingerprint template already exists at position number = '
++str(positionNumber))
+
+print('Remove your finger...')
+delaysec(2)
+
+print('Keep your finger again...')
+
+## Wait that finger is read again
+while (fingerprint_module.readImage() == False ):
+pass
+
+## Converts read image to characteristics and stores it in charbuffer 2
+fingerprint_module.convertImage(Ox02)
+
+## Compares the charbuffers
+if (fingerprint_module.compareCharacteristics() == 0):
+raise Exception('Fingers do not match')
+
+## Creates a template
+fingerprint_module.create Template()
+
+## Saves template at new position number
+positionNumber = fingerprint_module.storeTemplate()
+print('Finger enrolled successfully!')
+print('New template position #'+ str(positionNumber))
+except Exception as e:
+print('Enrollment fail.')
+print('Error:+ str(e))
+ ===========End ==========
+
+--- Original PDF page 34 ---
+34 | P a g e
+
+pass
+
+def searchFingerlnDB():
+print ("Search your Finger into Fingerprint Database")
+#================Start==================
+try:
+print('Keep your finger...')
+##Wait that finger is read
+while (fingerprint_module.readImage() == False ):
+pass
+##Converts read image to characteristics and stores it in charbuffer 1
+fingerprint_module.convertlmage(Ox01)
+
+## Searchs template
+
+result = fingerprint_module.searchTemplate()
+
+positionNumber = result[0]
+ accuracyScore = result[1]
+
+if (positionNumber == -1):
+print('No fingerprint template match found.')
+else:
+print('Fingerprint found at position number ='+ str(positionNumbe
+
+except Exception as e:
+print('Searching fail.')
+print('Error:'+ str(e))
+
+--- Original PDF page 35 ---
+35 | P a g e
+
+#==================End========
+pass
+
+def deleteFingerinDB():
+print ("Delete your Finger data from Fingerprint Database")
+
+#==============Start===========
+
+try:
+positionNumber = input('Please enter the template position you want to delete (in
+range 0 to 1000): ')
+positionNumber = int(positionNumber)
+if (fingerprint_module.deleteTemplate(positionNumber) == True ):
+ print('Template deleted successfully.')
+
+except Exception as e:
+print('Deletion fail.')
+print('Error: '+ str(e))
+
+#===========End===========
+pass
+def clearscreen():
+for i in range(5):
+print ("\n")
+pass
+pass
+
+def clearscreen(no_of_line):
+for i in range(no_of_line):
+print ("\n")
+pass
+
+--- Original PDF page 36 ---
+36 | P a g e
+
+pass
+
+def getFingerprintTemplateCount():
+clearscreen(5)
+print('Fingerprint  template , in database = ‘
+str(fingerprint_module.getTemplateCount())
+str(fingerprint_module.getStorageCapacity()))       +’/
+pass
+
+## Tries to initialize the sensor
+
+################# End of Useг funсtion #################
+def main():
+clearscreen(5)
+choice = 0     #for choosing the option
+global fingerprint_module #object for fingerprint module
+
+print ("Initialization done...Starting program")
+delaysec(1)
+
+while True:  #1st loop
+clearscreen(25)
+print( "\n\n Choose option in Menu below.\n 1. Enroll Fingerprint.\n Search
+Fingerprint.\n 3. Delete Fingerprint.\n")
+print (" 4. Get fingerprint record count in Database.\n 5. Exit Program.\n\n")
+print (" Enter choice: ")
+choice = int(input())
+
+#Enroll finger into Database
+if choice == 1:
+enrollFingerInDB()
+
+--- Original PDF page 37 ---
+37 | P a g e
+
+pass
+
+#Search finger into Database.
+if choice == 2:
+searchFingerlnDB()
+pass
+
+#Delete finger into Database.
+if choice == 3:
+deleteFingerlnDB()
+pass
+
+#Get fingerprint templates database information
+if choice == 4:
+getFingerprintTemplateCount()
+pass
+
+if choice == 5:
+exit(0)
+pass
+delaysec(0.5)
+pass    #end of 1st loop
+pass
+if name =='main ':
+try:
+main()
+except KeyboardInterrupt:
+pass
+finally:
+GPIO.cleanup()
+
+--- Original PDF page 38 ---
+38 | P a g e
+
+print ("\n\nProgram terminated...")
+
+
+7. Results

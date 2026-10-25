@@ -1,0 +1,140 @@
+--- Original PDF page 60 ---
+Terminal 2: Run Publisher
+ python3 publisher.py
+8. Result
+Subscriber Terminal:
+Connected
+Received: ON
+LED ON
+Received: OFF
+LED OFF
+Publisher Terminal:
+text
+Enter ON/OFF : ON
+Published : ON
+Enter ON/OFF : OFF
+Published : OFF
+
+
+
+                                          PRACTICAL – 14
+1. Aim
+Design a web dashboard using Flask. Control relay module via web.
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) Working of relay modules.
+
+--- Original PDF page 61 ---
+iii) Basic networking concepts.
+3. New Concepts
+i) IoT-based remote appliance control.
+ii) Interfacing relay modules with Raspberry Pi.
+iii) Web-based appliance automation.
+iv) Flask web server programming.
+v) GPIO control using Python.
+vi) Smart home automation concepts.
+4. Hardware Required
+i) Relay Module (2-channel)
+Input IMAGE
+ii) Bulb
+iii) DC Fan
+iv) Jumper Wires
+5. Procedure
+Pin Connection
+Input IMAGE
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+
+--- Original PDF page 62 ---
+sudo apt install idle3
+ pip install flask
+ pip install RPi.GPIO
+6. Implementation with Python Code
+Code:
+from flask import Flask
+
+import RPi.GPIO as GPIO
+
+app = Flask(__name__)
+
+# GPIO Setup
+GPIO.setmode(GPIO.BCM)
+
+LIGHT = 17
+
+FAN = 27
+
+GPIO.setup(LIGHT, GPIO.OUT)
+
+GPIO.setup(FAN, GPIO.OUT)
+
+GPIO.output(LIGHT, GPIO.LOW)
+
+GPIO.output(FAN, GPIO.LOW)
+
+
+@app.route('/')
+def home():
+    return """
+    <h1>IoT Home Automation</h1>
+
+--- Original PDF page 63 ---
+<h3>Light</h3>
+
+    <a href="/light/on">ON</a><br><br>
+
+    <a href="/light/off">OFF</a><br><br>
+
+    <h3>Fan</h3>
+
+    <a href="/fan/on">ON</a><br><br>
+
+    <a href="/fan/off">OFF</a>
+    """
+
+
+@app.route('/light/on')
+def light_on():
+    GPIO.output(LIGHT, GPIO.HIGH)
+    return "Light ON"
+
+
+@app.route('/light/off')
+def light_off():
+    GPIO.output(LIGHT, GPIO.LOW)
+    return "Light OFF"
+
+
+@app.route('/fan/on')
+def fan_on():
+    GPIO.output(FAN, GPIO.HIGH)
+    return "Fan ON"
+
+
+@app.route('/fan/off')
+def fan_off():
+
+--- Original PDF page 64 ---
+GPIO.output(FAN, GPIO.LOW)
+    return "Fan OFF"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+7. Execute the Above Program
+i) Run the above Program.
+ii) Find Raspi IP Address, by executing below command on command prompt:
+  hostname -I
+Eg: 192.168.1.10
+iii) Open Web Interface on mobile or laptop and enter the IP address in browser.
+Eg: http://192.168.1.10:5000
+8. Result
+The web dashboard using Flask is designed successfully to control the relay module via the
+web.
+
+PRACTICAL – 15
+1. Aim
+Create two factor authentication system by interfacing fingerprint sensor, RFID reader with
+Raspberry Pi.
+2. Prior Concepts
+i) Concept of Python Programming.

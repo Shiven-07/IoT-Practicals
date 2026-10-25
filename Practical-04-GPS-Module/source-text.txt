@@ -1,0 +1,100 @@
+--- Original PDF page 13 ---
+13 | P a g e
+
+PRACTICAL-4
+
+1.Aim:
+Interface GPS module with Raspberry Pi
+
+2.Prior Concepts
+i)Concept of Python Programming
+ii) Working of GPS Module Sensor
+
+3.New Concepts
+i) Hardware connection of GPS Module with Raspi.
+
+4.Hardware Requirement and PIN Connection
+
+Raspberry Pi 4
+
+ii) GPS Module (e.g., NEO-6M GPS Module)
+
+iii) Jumper Wires
+
+Pin Connection
+GPS Module PIN RPi Function
+GND(Ground) 6 GND(Ground)
+VCC(+5V Power) 2 5V
+Tx 10 GPIO 15(RXD)
+Rx 8 GPIO 14(TXD)
+
+--- Original PDF page 14 ---
+14 | P a g e
+
+
+
+5. Procedure
+i) Enable UART on Raspberry Pi by writing below code in command terminal
+sudo raspi-config
+ii)Navigate:
+Interface Options
+   → Serial Port
+→ Login shell over serial? No
+→ Serial port hardware enabled? Yes
+iii) Reboot Raspi by writing below code in command terminal
+sudo reboot
+iv) Verify Serial port by writing below code in command terminal
+Is /dev/serial*
+Expected Output:
+ /dev/serial0
+ /dev/serial1
+v) Install GPS Packages, on Raspberry Pi by writing below code in command terminal
+sudo apt update
+sudo apt install gpsd gpsd-clients python3-gps -y
+vi) Stop GPS daemon, on Raspberry Pi by writing below code in command terminal sudo
+systemctl stop gpsd.socket
+sudo systemctl disable gpsd.socket
+
+--- Original PDF page 15 ---
+15 | P a g e
+
+vii)Start GPS daemon manually, on Raspberry Pi by writing below code in command terminal.
+sudo gpsd /dev/serial0-F/var/run/gpsd.sock
+viii) Test GPS Data, on Raspberry Pi by writing below code in command terminal
+cgps-s
+OR
+gpsmon
+
+Note: You should see NMEA sentences and GPS coordinates once the module acquires
+satellites.
+Example:
+Latitude: 19.0760
+Longitude: 72.8777
+Altitude: 14.2 m
+Time: 12:45:30 UTC
+ix) Write the below command to read data from GPS.
+pip3 install pyserial pynmea2
+
+Write the below code:
+import serial
+import pynmea2
+
+port = "/dev/serial0"
+ser = serial.Serial(port, baudrate=9600, timeout=1)
+
+while True:
+data = ser.readline().decode('ascii', errors='replace')
+
+if data.startswith('$GPGGA'):
+msg = pynmea2.parse(data)
+print("Latitude:", msg.latitude)
+
+--- Original PDF page 16 ---
+16 | P a g e
+
+
+print("Longitude:", msg.longitude)
+ print("Altitude :", msg.altitude)
+ print("--------------------------")
+
+6)Results:

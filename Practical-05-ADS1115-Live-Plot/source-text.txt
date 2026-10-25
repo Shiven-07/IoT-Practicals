@@ -1,0 +1,118 @@
+--- Original PDF page 17 ---
+17 | P a g e
+
+
+PRACTICAL-5
+
+1. Aim
+Interface ADS 1115 with Raspberry Pi to act as oscilloscope.
+
+2. Prior Concepts
+i) Concept of Python Programming
+ii) Use of Gas Sensor
+ii) Concept of Oscilloscope
+
+3. New Concepts
+i) Hardware interfacing of Gas Sensor with ADS1115 ADC and Raspi.
+ii) Generating waveform of Gas Sensor values.
+
+4. Hardware Requirement and PIN Connection
+i) Raspberry Pi 4
+ii)ADS1115 ADC
+iii) MQ-2 Gas Sensor
+iv)Jumper wires
+
+Pin Connection
+ADS1115 RPi Pin Function
+VDD(5V) 2 5V
+GND 6 GND(GROUND)
+SDA 3 GPIO 2(SDA1)
+SCL 5 GPIO 3(SCL1)
+
+MQ2 Gas Sensor ADS1115 RPi Pin Function
+VCC - 4 5V
+GND - 39 GND(GROUND)
+A0 A0 - -
+
+--- Original PDF page 18 ---
+18 | P a g e
+
+
+
+5. Procedure
+Step 1: Enable Raspberry Pi I2C interface
+To enable the I2C, from the terminal, run;
+sudo raspi-config
+When the configuration panels open, select interface options, select I2C and click
+enable.
+
+Step 2: Update the Raspberry pi
+To do this, run below two commands:
+sudo apt update
+
+--- Original PDF page 19 ---
+19 | P a g e
+
+Step 3: Install the Adafruit ADS1115 library for ADC and Matplotlib for plotting of graph.
+
+pip3 install adafruit-circuitpython-ads1x15 matplotlib --break-system-packages
+pip3 uninstall -y adafruit-platformdetect adafruit-blinka
+sudo reboot
+
+pip3 install --no-cache-dir --upgrade adafruit-platformdetect adafruit-blinka
+sudo reboot
+
+Note:
+Once all the above configuration command run and connection done then below
+command should be run.
+sudo apt-get install -y i2c-tools python3
+Ismod | grep i2c_
+i2cdetect -y 1
+
+Write the below code:
+import time
+import board
+import busio
+import matplotlib.pyplot as plt
+from collections import deque
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
+i2c = busio.I2C(board.SCL, board.SDA)
+ads = ADS.ADS1115(i2c)
+ads.gain = 1 # ±4.096
+chan = AnalogIn(ads, ADS. PO)
+x_vals = deque(maxlen = 50)
+Y_vals = deque(maxlen = 50)
+
+--- Original PDF page 20 ---
+20 | P a g e
+
+pit.ion()
+fig, ax = plt.subplots()
+line, = ax.plot([],[], label="Gas Sensor Values from ADS1115", marker='o') ax.set_ylim(0,2)
+ax.set_xlim(0,100)
+ax.set_title('MQ2 Gas Sensor Live Plot')
+ax.set_xlabel('Sample')
+ax.set_ylabel('Voltage(V)')
+ax.legend()
+
+counter = 0
+
+print("Reading Gas Sensor values in Volts...!")
+try:
+while True:
+v = chan.voltage
+x_vals.append(counter)
+y_vals.append(v)
+line.set_xdata(x_vals)
+line.set_ydata(y_vals)
+ax.set_xlim(counter-100 if counter > 100 else 0, counter + 1)
+fig.canvas.draw()
+fig.canvas.flush_events()
+time.sleep(1)
+counter+=1
+
+except KeyboardInterrupt:
+print("Stopped")
+
+6. Results:

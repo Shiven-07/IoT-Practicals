@@ -1,0 +1,169 @@
+--- Original PDF page 51 ---
+PRACTICAL – 12
+1. Aim
+Simulate door lock by interfacing fingerprint sensor and relay module with raspberry Pi. (This
+practical instead of door, bulb is used to show the output).
+2. Prior Concepts
+i) Basic Raspberry Pi architecture and GPIO programming.
+ii) Knowledge of UART serial communication.
+iii) Basics of biometric authentication.
+iv) Relay module operation and switching principles.
+3. New Concepts
+i) Interfacing a biometric fingerprint sensor with Raspberry Pi.
+ii) Controlling a relay based on authentication results.
+iii) Integration of sensing, processing, and actuation in an embedded system.
+4. Hardware Required
+i) Fingerprint Sensor (R307, AS608, etc.)
+ii) Relay Module (5V)
+iii) Bulb
+iv) Jumper Wires
+5. Procedure
+Pin Connection
+
+--- Original PDF page 52 ---
+i) Fingerprint Sensor → Raspberry Pi
+Fingerprint
+Sensor
+Raspberry Pi
+VCC 5V
+GND GND
+TX GPIO15(RXD)
+RX GPIO14(TXD)
+ii) Relay Module to Raspberry Pi
+Relay Module Raspberry Pi
+VCC 5V
+GND GND
+IN GPIO18
+iii) Bulb Connection
+Bulb Relay Module
+Positive Terminal No (Normally Open)
+Negative Terminal GND/Power Return
+
+                  Input IMAGE
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+
+--- Original PDF page 53 ---
+sudo apt install idle3
+Enable UART on Raspberry Pi:
+ sudo raspi-config
+Navigate to:
+ Interface Options → Serial Port
+ Login Shell? → No
+ Serial Hardware? → Yes
+Reboot:
+ sudo reboot
+Install Libraries
+ sudo apt update
+ sudo apt install python3-pip -y
+ pip3 install pyfingerprint
+6. Implementation with Python Code
+Code:
+from pyfingerprint.pyfingerprint import PyFingerprint
+
+import RPi.GPIO as GPIO
+
+from time import sleep
+
+# Relay connected to GPIO18
+RELAY_PIN = 18
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(RELAY_PIN, GPIO.OUT)
+
+--- Original PDF page 54 ---
+# Initially bulb OFF
+GPIO.output(RELAY_PIN, GPIO.LOW)
+
+# Initialize Fingerprint Sensor
+try:
+
+    fp = PyFingerprint(
+        '/dev/serial0',
+        57600,
+        0xFFFFFFFF,
+        0x00000000
+    )
+
+    if not fp.verifyPassword():
+        raise ValueError('Fingerprint sensor password incorrect')
+
+except Exception as e:
+
+    print("Fingerprint Sensor Initialization Failed")
+
+    print(e)
+
+    exit(1)
+
+print("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ")
+
+print("Fingerprint Controlled Bulb")
+
+print("System Ready...")
+
+print("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ")
+
+while True:
+
+--- Original PDF page 55 ---
+print("\nPlace Finger on Sensor...")
+
+    # Wait until finger is placed
+    while not fp.readImage():
+        pass
+
+    # Convert image to characteristics
+    fp.convertImage(0x01)
+
+    # Search fingerprint template
+    result = fp.searchTemplate()
+
+positionNumber = result[0]
+
+if positionNumber >= 0:
+
+    print("Fingerprint Matched")
+    print("Bulb ON")
+
+    # Turn ON Bulb through Relay
+    GPIO.output(RELAY_PIN, GPIO.HIGH)
+
+    # Keep bulb ON for 5 seconds
+    sleep(5)
+
+    # Turn OFF Bulb
+    GPIO.output(RELAY_PIN, GPIO.LOW)
+
+    print("Bulb OFF")
+
+else:
+
+    print("Unauthorized User")
+    print("Access Denied")
+
+--- Original PDF page 56 ---
+print("Bulb Remains OFF")
+
+    GPIO.output(RELAY_PIN, GPIO.LOW)
+
+    sleep(2)
+7. Result:
+
+                                             PRACTICAL – 13
+1. Aim
+Implement basic Publisher – Subscriber using MQTT. Publish messages using mqtt. Subscribe
+and control LED.
+2. Prior Concepts
+i) Basic Raspberry Pi architecture and GPIO programming.
+ii) Client–Server communication.
+iii) Command-line operations in Linux.
+3. New Concepts
+i) MQTT publish-subscribe communication model.
+ii) Working of MQTT broker, publisher and subscriber.
+iii) Using Paho MQTT library in Python.
+iv) Event-driven programming using MQTT callbacks.
+v) Building cloud-ready IoT applications.
+4. Hardware Required

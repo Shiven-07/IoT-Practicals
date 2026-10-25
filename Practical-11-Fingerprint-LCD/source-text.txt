@@ -1,0 +1,142 @@
+--- Original PDF page 46 ---
+1. Aim
+Interface Fingerprint Sensor and 16X2 LCD with Raspberry and display message Fingerprint
+matched or unmatched.
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) Knowledge of UART serial communication.
+iii) Basics of I2C communication.
+iv) Basic LCD display programming.
+3. New Concepts
+i) Interfacing a biometric fingerprint sensor with Raspberry Pi.
+ii) Using UART communication for fingerprint sensor data exchange.
+iii) Interfacing a 16×2 LCD through the I2C protocol.
+iv) Developing a complete fingerprint-based access verification system.
+4. Hardware Required
+i) Fingerprint Sensor (R307, AS608, etc.)
+ii) 16×2 LCD with I2C module
+iii) Jumper Wires
+5. Procedure
+Pin Connection
+                                           PRACTICAL – 11
+
+--- Original PDF page 47 ---
+i) Fingerprint Sensor → Raspberry Pi
+
+
+Fingerprint Sensor  Raspberry Pi
+VCC 5V
+GND GND
+TX
+GPIO15
+(RXD)
+RX
+GPIO14
+(TXD)
+ii) I2C LCD → Raspberry Pi
+LCD I2C
+
+Raspberry Pi
+VCC 5V
+GND GND
+SDA GPIO2 (SDA)
+SCL GPIO3 (SCL)
+Input image
+i) Install Python3 on Raspi.
+Write the below code in command prompt:
+ sudo apt install idle3
+Enable UART on Raspberry Pi:
+
+--- Original PDF page 48 ---
+sudo raspi-config
+Navigate to:
+Interface Options → Serial Port
+Login Shell? → No
+Serial Hardware? → Yes
+Reboot:
+sudo reboot
+Enable I2C on Raspberry Pi :
+ sudo raspi-config
+Navigate to:
+Interface Options → I2C → Enable
+Install Libraries
+ sudo apt update
+ sudo apt install python3-pip -y
+ pip3 install pyfingerprint
+ pip3 install RPLCD
+ pip3 install RPLCD-i2c
+6. Implementation with Python Code
+Code :
+from pyfingerprint.pyfingerprint import PyFingerprint
+from RPLCD.i2c import CharLCD
+from time import sleep
+
+--- Original PDF page 49 ---
+# LCD configuration
+lcd = CharLCD('PCF8574', 0x27)
+lcd.clear()
+lcd.write_string('Place Finger')
+
+try:
+
+    # Fingerprint sensor
+    f = PyFingerprint('/dev/serial0', 57600, 0xFFFFFFFF,
+                      0x00000000)
+
+    if not f.verifyPassword():
+        raise ValueError ('Fingerprint sensor password incorrect')
+
+except Exception as e:
+
+    print ('Sensor initialization failed!')
+
+    print (e)
+
+    exit (1)
+
+while True:
+
+    lcd.clear ()
+
+    lcd.write_string ('Place Finger')
+
+    # Wait for finger
+    while not f.readImage():
+
+        pass
+
+    # Convert image
+
+--- Original PDF page 50 ---
+f.convertImage(0x01)
+
+    # Search template
+
+    result = f.searchTemplate()
+
+    positionNumber = result[0]
+
+    lcd.clear ()
+
+    if positionNumber >= 0:
+
+        lcd.write_string('Fingerprint')
+
+        lcd.crlf ()
+
+        lcd.write_string('Matched')
+
+        print ("Fingerprint Matched")
+
+    else:
+
+        lcd.write_string('Fingerprint')
+
+        lcd.crlf()
+
+        lcd.write_string('Unmatched')
+
+        print("Fingerprint Unmatched")
+
+    sleep(3)
+7. Result

@@ -1,0 +1,133 @@
+--- Original PDF page 71 ---
+Icd_msg("ACCESS", "DENIED")
+print("Unauthorized RFID")
+except KeyboardInterrupt:
+GPIO.cleanup()
+Break
+7. Result:
+
+PRACTICAL – 16
+1. Aim
+Create a motion detector by interfacing camera and 16X2 display with Raspberry Pi, Print the
+appropriate message on the display.
+2. Prior Concepts
+i) Concept of Python Programming.
+ii) Basics of camera operation.
+iii) Basics of 12C communication.
+iv) Interfacing 16x2 LCD with Raspberry Pi.
+v) Basic image processing concepts.
+3. New Concepts
+i)  Motion detection using computer vision.
+ii) Raspberry Pi Camera interfacing.
+
+--- Original PDF page 72 ---
+iii)  Frame differencing technique.
+iv) Integration of camera and LCD modules.
+4. Hardware Required
+i) Raspberry Pi Camera Module V2/V3
+ii) 16×2 LCD with 12C (PCF8574)
+iii) Jumper Wires
+5. Procedure
+Pin Connection
+Camera Module: Connect the Raspberry Pi Camera Module to the CSI Camera Port of
+Raspberry Pi 4.
+12C LCD Connections to Raspi:
+LCD (12C) Raspberry Pi 4
+VCC 5V (Pin 2)
+GND GND (Pin 6)
+SDA GPIO2 SDA (Pin 3)
+SCL GPIO3 SCL (Pin 5)
+
+Input IMAGE
+1) Install Python3 on Raspi.
+Write the below code in command prompt:
+sudo apt install idle3
+
+--- Original PDF page 73 ---
+Enable following Interfaces:
+sudo raspi-config
+12C -> Enable
+Camera -> Enable
+sudo reboot
+Install Libraries
+sudo apt update
+sudo apt install python3-opencv -y
+pip3 install RPLCD
+pip3 install smbus2
+pip3 install picamera2
+6. Implementation with Python Code
+Code:
+from picamera2 import Picamera?
+import cv.2
+import numpy as np
+import time
+from RPLCD.i2c import CharLCD
+Icd = CharLCD(
+PCF8574',
+
+--- Original PDF page 74 ---
+0x27,
+cols=16,
+rows 2
+)
+pcam2 Picamera2()
+config = picam2.create_preview_configuration(
+main=["size": (640,480))
+pram2.configure(config)
+picam2.start()
+time.sleep(2)
+frame1 = picam2.capture_array()
+frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+while True:
+frame2 = picam2.capture_array()
+frame2_gray = cv2.cvtColor(
+frame2,
+cv2.COLOR_BGR2GRAY
+)
+diff = cv2.absdiff(
+frame1,
+
+--- Original PDF page 75 ---
+frame2_gray
+)
+threshold= cv2.threshold(
+diff,
+25,
+255,
+cv2.THRESH_BINARY
+) [1]
+motion_pixels = cv2.countNonZero(
+threshold
+)
+Icd.clear()
+if motion_pixels > 5000:
+print("Motion Detected")
+Icd.write_string(
+"Motion Detected"
+)
+else:
+print("No Motion")
+Icd.write_string(
+
+--- Original PDF page 76 ---
+"No Motion"
+)
+frame1 = frame2_gray
+time.sleep(1)
+7. Result:
+
+  PRACTICAL-17
+1. Aim
+push-button and an LED with a web dashboard. The flow must allow users to toggle the LED
+from the dashboard and via the physical button. A button press should force the LED ON
+Design and implement a Node-RED flow on Raspberry Pi that integrates a physic for 5 seconds
+and then automatically restore the LED to the dashboard's last state.
+2. Prior Concepts
+i) Concept of Python Programming
+ii) LED interfacing with Raspberry Pi
+iii) Push button switch operation
+iv) Web browser operation
+v) Event-driven programming basics
+3. New Concepts
+i) Node-RED visual programming.
+ii) Flow-based loT application development.
